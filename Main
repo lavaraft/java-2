@@ -1,0 +1,52 @@
+import javax.swing.*;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[]args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your first Number: ");
+        int num1 = scanner.nextInt();
+        System.out.print("Enter your second Number: ");
+        int num2 = scanner.nextInt();
+
+        scanner.nextLine();
+        
+        System.out.println("1. Addition +: ");
+        System.out.println("2. Subtraction -:" );
+        System.out.println("3. Multiplication *: ");
+        System.out.println("4. Division /: ");
+        System.out.print("Choose 1-4: ");
+        scanner.nextLine();
+
+        int result = 0;
+        double operator = scanner.nextInt();
+        String Operator = "";
+        boolean valid = true;
+
+        if  (operator == 1) {
+            result = num1 + num2;
+            Operator = "+";
+        }else if(operator== 2) {
+            result = num1 - num2;
+            Operator = "-";
+        }
+        else if (operator == 3) {
+            result = num2 * num1;
+            Operator = "*";
+        } else if(operator == 4) {
+            result = num2 / num1;
+            Operator = "/";
+        }else
+        System.out.println("Invalid");
+        boolean validInput = false;
+
+        if (validInput) {
+            System.out.println("Result: " + num1 + " " + Operator + " " + num2 + " = " + result);
+
+        }
+        scanner.close();
+
+    }
+}
