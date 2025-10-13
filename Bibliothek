@@ -1,0 +1,265 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Abstrakte Klasse Medium - unsere Vorlage für alle Medien
+abstract class Medium {
+    protected String titel;
+    protected String kategorie;
+    protected int erscheinungsjahr;
+
+    public Medium(String titel, String kategorie, int erscheinungsjahr) {
+        this.titel = titel;
+        this.kategorie = kategorie;
+        this.erscheinungsjahr = erscheinungsjahr;
+    }
+
+
+    public abstract void anzeigen();
+}
+
+// Buch-Klasse
+class Buch extends Medium {
+    private String autor;
+    private int seitenzahl;
+
+    public Buch(String titel, String kategorie, int erscheinungsjahr, String autor, int seitenzahl) {
+        super(titel, kategorie, erscheinungsjahr);
+        this.autor = autor;
+        this.seitenzahl = seitenzahl;
+    }
+
+    @Override
+    public void anzeigen() {
+        System.out.println("   BUCH: " + titel);
+        System.out.println("   Autor: " + autor);
+        System.out.println("   Kategorie: " + kategorie);
+        System.out.println("   Jahr: " + erscheinungsjahr);
+        System.out.println("   Seiten: " + seitenzahl);
+        System.out.println("---------------------------");
+    }
+}
+
+// Film-Klasse
+class Film extends Medium {
+    private String regisseur;
+    private int dauerInMinuten;
+
+    public Film(String titel, String kategorie, int erscheinungsjahr, String regisseur, int dauerInMinuten) {
+        super(titel, kategorie, erscheinungsjahr);
+        this.regisseur = regisseur;
+        this.dauerInMinuten = dauerInMinuten;
+    }
+
+    @Override
+    public void anzeigen() {
+        System.out.println("   FILM: " + titel);
+        System.out.println("   Regisseur: " + regisseur);
+        System.out.println("   Kategorie: " + kategorie);
+        System.out.println("   Jahr: " + erscheinungsjahr);
+        System.out.println("   Dauer: " + dauerInMinuten + " Minuten");
+        System.out.println("---------------------------");
+    }
+}
+
+// CD-Klasse
+class CD extends Medium {
+    private String interpret;
+    private int anzahlTitel;
+
+    public CD(String titel, String kategorie, int erscheinungsjahr, String interpret, int anzahlTitel) {
+        super(titel, kategorie, erscheinungsjahr);
+        this.interpret = interpret;
+        this.anzahlTitel = anzahlTitel;
+    }
+
+    @Override
+    public void anzeigen() {
+        System.out.println("   CD: " + titel);
+        System.out.println("   Interpret: " + interpret);
+        System.out.println("   Kategorie: " + kategorie);
+        System.out.println("   Jahr: " + erscheinungsjahr);
+        System.out.println("   Titelanzahl: " + anzahlTitel);
+        System.out.println("---------------------------");
+    }
+}
+
+// Bibliothek-Klasse - verwaltet alle Medien
+class Bibliothek {
+    private ArrayList<Medium> medienListe;
+
+    public Bibliothek() {
+        medienListe = new ArrayList<>();
+    }
+
+    // Medium zur Liste hinzufügen
+    public void mediumHinzufuegen(Medium m) {
+        medienListe.add(m);
+        System.out.println(m.titel + "' wurde hinzugefügt!");
+    }
+
+    // Alle Medien anzeigen
+    public void alleMedienAnzeigen() {
+        if (medienListe.isEmpty()) {
+            System.out.println("😔 Die Bibliothek ist leer.");
+            return;
+        }
+
+        System.out.println("\n ALLE MEDIEN IN DER BIBLIOTHEK:");
+        for (Medium m : medienListe) {
+            m.anzeigen();
+        }
+    }
+
+    // Nach Kategorie filtern
+    public void filternNachKategorie(String kategorie) {
+        System.out.println("\n MEDIEN IN KATEGORIE: " + kategorie);
+        boolean gefunden = false;
+
+        for (Medium m : medienListe) {
+            if (m.kategorie.equalsIgnoreCase(kategorie)) {
+                m.anzeigen();
+                gefunden = true;
+            }
+        }
+
+        if (!gefunden) {
+            System.out.println("Keine Medien in der Kategorie '" + kategorie + "' gefunden.");
+        }
+    }
+
+    // Optional: Nach Erscheinungsjahr filtern
+    public void filternNachErscheinungsjahr(int jahr) {
+        System.out.println("\n MEDIEN AUS DEM JAHR: " + jahr);
+        boolean gefunden = false;
+
+        for (Medium m : medienListe) {
+            if (m.erscheinungsjahr == jahr) {
+                m.anzeigen();
+                gefunden = true;
+            }
+        }
+
+        if (!gefunden) {
+            System.out.println("Keine Medien aus dem Jahr " + jahr + " gefunden.");
+        }
+    }
+}
+
+// Hauptprogramm
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Bibliothek bibliothek = new Bibliothek();
+
+        // Einige Beispiele hinzufügen
+        bibliothek.mediumHinzufuegen(new Buch("Harry Potter", "Fantasy", 1997, "J.K. Rowling", 320));
+        bibliothek.mediumHinzufuegen(new Film("Die Eiskönigin", "Animation", 2013, "Chris Buck", 102));
+        bibliothek.mediumHinzufuegen(new CD("Thriller", "Pop", 1982, "Michael Jackson", 9));
+
+        int auswahl;
+
+        do {
+            // Menü anzeigen
+            System.out.println("\n----MEDIEN-BIBLIOTHEK----");
+            System.out.println("1. Neues Medium hinzufügen");
+            System.out.println("2. Alle Medien anzeigen");
+            System.out.println("3. Nach Kategorie filtern");
+            System.out.println("4. Nach Erscheinungsjahr filtern");
+            System.out.println("5. Beenden");
+            System.out.print("Auswahl (1-5): ");
+
+            auswahl = scanner.nextInt();
+            scanner.nextLine(); // Zeilenumbruch lesen
+
+            switch (auswahl) {
+                case 1:
+                    neuesMediumHinzufuegen(scanner, bibliothek);
+                    break;
+                case 2:
+                    bibliothek.alleMedienAnzeigen();
+                    break;
+                case 3:
+                    nachKategorieFiltern(scanner, bibliothek);
+                    break;
+                case 4:
+                    nachJahrFiltern(scanner, bibliothek);
+                    break;
+                case 5:
+                    System.out.println("Auf Wiedersehen!");
+                    break;
+                default:
+                    System.out.println("Ungültige Auswahl! Bitte 1-5 wählen.");
+            }
+
+        } while (auswahl != 5);
+
+        scanner.close();
+    }
+
+    // Neues Medium hinzufügen
+    private static void neuesMediumHinzufuegen(Scanner scanner, Bibliothek bibliothek) {
+        System.out.println("\nNEUES MEDIUM HINZUFÜGEN");
+        System.out.println("Welche Art von Medium?");
+        System.out.println("1. Buch");
+        System.out.println("2. Film");
+        System.out.println("3. CD");
+        System.out.print("Auswahl (1-3): ");
+
+        int typ = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Titel: ");
+        String titel = scanner.nextLine();
+
+        System.out.print("Kategorie: ");
+        String kategorie = scanner.nextLine();
+
+        System.out.print("Erscheinungsjahr: ");
+        int jahr = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (typ) {
+            case 1:
+                System.out.print("Autor: ");
+                String autor = scanner.nextLine();
+                System.out.print("Seitenzahl: ");
+                int seiten = scanner.nextInt();
+                bibliothek.mediumHinzufuegen(new Buch(titel, kategorie, jahr, autor, seiten));
+                break;
+
+            case 2:
+                System.out.print("Regisseur: ");
+                String regisseur = scanner.nextLine();
+                System.out.print("Dauer in Minuten: ");
+                int dauer = scanner.nextInt();
+                bibliothek.mediumHinzufuegen(new Film(titel, kategorie, jahr, regisseur, dauer));
+                break;
+
+            case 3:
+                System.out.print("Interpret: ");
+                String interpret = scanner.nextLine();
+                System.out.print("Anzahl Titel: ");
+                int titelAnzahl = scanner.nextInt();
+                bibliothek.mediumHinzufuegen(new CD(titel, kategorie, jahr, interpret, titelAnzahl));
+                break;
+
+            default:
+                System.out.println("Ungültige Auswahl!");
+        }
+    }
+
+    // Nach Kategorie filtern
+    private static void nachKategorieFiltern(Scanner scanner, Bibliothek bibliothek) {
+        System.out.print("\nNach welcher Kategorie suchen? ");
+        String kategorie = scanner.nextLine();
+        bibliothek.filternNachKategorie(kategorie);
+    }
+
+    // Nach Jahr filtern
+    private static void nachJahrFiltern(Scanner scanner, Bibliothek bibliothek) {
+        System.out.print("\nNach welchem Jahr suchen? ");
+        int jahr = scanner.nextInt();
+        scanner.nextLine();
+        bibliothek.filternNachErscheinungsjahr(jahr);
+    }
+}
