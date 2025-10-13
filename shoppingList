@@ -1,0 +1,29 @@
+// import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args){
+        Scanner scanner = new Scanner (System.in);
+
+        char currency = '€';
+        double total;
+
+        System.out.print("Enter your items: ");
+        String item = scanner.nextLine();
+
+        System.out.print("What is the price for each: ");
+        double price = scanner.nextDouble();
+
+        System.out.print("How much of the item: ");
+        int quantity = scanner.nextInt();
+
+        total = price * quantity;
+
+        System.out.print("\nYou have bought " + quantity + " " + item + "/s.");
+        System.out.println(" Your total is "  + total + currency);
+
+
+
+        scanner.close();
+    }
+}
